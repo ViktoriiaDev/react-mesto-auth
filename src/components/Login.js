@@ -1,9 +1,11 @@
 import React from "react";
+import { useHistory } from "react-router-dom";
+import { singin } from "../utils/auth";
 
-const Login = () => {
-  const [email, setEmail] = React.useState('');
-  const [password, setPassword] = React.useState('');
-
+const Login = ({ setLoggedIn, fetchUser }) => {
+  const [email, setEmail] = React.useState("");
+  const [password, setPassword] = React.useState("");
+  const { push } = useHistory();
 
   function handleChangeEmail(e) {
     setEmail(e.target.value);
@@ -13,20 +15,26 @@ const Login = () => {
     setPassword(e.target.value);
   }
 
-  // function handleSubmit(e) {
-  //   e.preventDefault();
-  //   onUpdateUser({
-  //     name,
-  //     about: description,
-  //   });
-  // }
-  
+  function handleSubmit(e) {
+    e.preventDefault();
+    singin(email, password)
+      .then((res) => {
+        if (res) {
+          fetchUser();
+          setLoggedIn(true);
+          push("/");
+        }
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  }
 
   return (
     <>
       <div className="unauth">
         <div className="unauth__title">Вход</div>
-        <form className="unauth__form">
+        <form onSubmit={handleSubmit} className="unauth__form">
           <input
             value={email}
             onChange={handleChangeEmail}

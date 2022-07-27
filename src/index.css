@@ -60,3 +60,4 @@
 @import url(./blocks/infotooltip/__icon/infotooltip__icon.css);
 @import url(./blocks/infotooltip/__title/infotooltip__title.css);
 @import url(./blocks/popup/__window/_infotooltip/popup__window_infotooltip.css);
+@import url(./blocks/header/__logout/header__logout.css);

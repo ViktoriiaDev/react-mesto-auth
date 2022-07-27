@@ -1,11 +1,16 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import InfoTooltip from "./InfoTooltip";
+import { singup } from "../utils/auth";
 
 const Register = () => {
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
-  const [isOpen, setIsOpen] = React.useState(true);
+  const [tooltipState, setTooltipState] = React.useState({
+    isOpen: false,
+    isSuccess: false
+  })
+
 
   function handleChangeEmail(e) {
     setEmail(e.target.value);
@@ -16,22 +21,35 @@ const Register = () => {
   }
 
   const closePopup = () => {
-    setIsOpen(false)
+    setTooltipState(prev => ({
+      ...prev,
+      isOpen: false,
+    }))
   };
 
-  // function handleSubmit(e) {
-  //   e.preventDefault();
-  //   onUpdateUser({
-  //     name,
-  //     about: description,
-  //   });
-  // }
+  function handleSubmit(e) {
+    e.preventDefault();
+    singup(email, password).then((res) => {
+      if (res.data) {
+        setTooltipState({
+          isOpen: true,
+          isSuccess: true
+        })
+      }
+    })
+    .catch((e) => {
+      setTooltipState({
+        isOpen: true,
+        isSuccess: false
+      })
+    });
+  }
   
   return (
     <>
       <div className="unauth">
         <div className="unauth__title">Регистрация</div>
-        <form className="unauth__form">
+        <form onSubmit={handleSubmit} className="unauth__form">
           <input
             value={email}
             onChange={handleChangeEmail}
@@ -47,6 +65,7 @@ const Register = () => {
             placeholder="Пароль"
             name="password"
             className="unauth__form-input"
+            type="password"
             required
           />
           <button className="unauth__form-submit" type="submit">
@@ -55,7 +74,7 @@ const Register = () => {
            <Link to="/sign-in" className="unauth__link">Уже зарегистрированы? Войти</Link>
         </form>
       </div>
-    <InfoTooltip isOpen={isOpen} isSuccess={false} onClose={closePopup}/>
+    <InfoTooltip isOpen={tooltipState.isOpen} isSuccess={tooltipState.isSuccess} onClose={closePopup}/>
     </>
   );
 };

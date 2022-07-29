@@ -1,3 +1,10 @@
+const checkResponse = (res) => {
+  if (res.ok) {
+    return res.json();
+  }
+  return Promise.reject(`Ошибка: ${res.status}`);
+}
+
 export const BASE_URL = "https://auth.nomoreparties.co";
 
 export const singup = (email, password) => {
@@ -9,15 +16,7 @@ export const singup = (email, password) => {
     },
     body: JSON.stringify({ email, password }),
   })
-    .then((response) => {
-      if (response.status === 400) {
-        throw new Error(response.statusText);
-      }
-      return response.json();
-    })
-    .then((res) => {
-      return res;
-    });
+    .then(checkResponse)
 };
 export const singin = (email, password) => {
   return fetch(`${BASE_URL}/signin`, {
@@ -28,12 +27,7 @@ export const singin = (email, password) => {
     },
     body: JSON.stringify({ email, password }),
   })
-    .then((response) => {
-      if (response.status === 400 || response.status === 401) {
-        throw new Error(response.statusText);
-      }
-      return response.json();
-    })
+    .then(checkResponse)
     .then((data) => {
       if (data) {
         localStorage.setItem("jwt", data.token);
@@ -51,11 +45,6 @@ export const getUser = () => {
       Authorization: `Bearer ${localStorage.getItem("jwt")}`,
     },
   })
-    .then((response) => {
-      if (response.status === 400 || response.status === 401) {
-        throw new Error(response.statusText);
-      }
-      return response.json();
-    })
+    .then(checkResponse)
     .then((data) => data);
 };

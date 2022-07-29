@@ -31,33 +31,31 @@ const Login = ({ setLoggedIn, fetchUser }) => {
   }
 
   return (
-    <>
-      <div className="unauth">
-        <div className="unauth__title">Вход</div>
-        <form onSubmit={handleSubmit} className="unauth__form">
-          <input
-            value={email}
-            onChange={handleChangeEmail}
-            placeholder="Email"
-            name="email"
-            className="unauth__form-input"
-            required
-          />
+    <div className="unauth">
+      <div className="unauth__title">Вход</div>
+      <form onSubmit={handleSubmit} className="unauth__form">
+        <input
+          value={email}
+          onChange={handleChangeEmail}
+          placeholder="Email"
+          name="email"
+          className="unauth__form-input"
+          required
+        />
 
-          <input
-            value={password}
-            onChange={handleChangePassword}
-            placeholder="Пароль"
-            name="password"
-            className="unauth__form-input"
-            required
-          />
-          <button className="unauth__form-submit" type="submit">
-            Войти
-          </button>
-        </form>
-      </div>
-    </>
+        <input
+          value={password}
+          onChange={handleChangePassword}
+          placeholder="Пароль"
+          name="password"
+          className="unauth__form-input"
+          required
+        />
+        <button className="unauth__form-submit" type="submit">
+          Войти
+        </button>
+      </form>
+    </div>
   );
 };
 
